@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
@@ -21,6 +23,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    project.ext{
+        ktx_version  = "1.0.2"
+        navigationktx_version = "2.1.0"
+        lifecycle_version = "2.1.0"
+    }
+
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
@@ -35,5 +47,11 @@ dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.google.android.material:material:1.0.0'
+
+    //Navigation components
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigationktx_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigationktx_version"
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+
 
 }
