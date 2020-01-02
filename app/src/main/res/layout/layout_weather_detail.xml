@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/weather_card"
+    android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical"
+            tools:ignore="RelativeOverlap">
+
+            <TextView
+                android:padding="2dp"
+                android:id="@+id/itemDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="16:00"
+                android:textColor="@color/text_light"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:padding="2dp"
+                android:id="@+id/itemDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="No data"
+                android:textColor="@color/text_light"
+                android:textSize="16sp" />
+
+            <TextView
+                android:padding="2dp"
+                android:id="@+id/itemHumidity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Humidity: 0 %"
+                android:textColor="@color/text_light"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <ImageView
+            android:src="@drawable/ic_cloud_white_36dp"
+            android:id="@+id/itemIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/text_light"
+            android:textSize="48sp"
+            android:contentDescription="@string/weatherimage" />
+
+        <TextView
+            android:id="@+id/itemTemperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="0 °C"
+            android:textSize="22sp"
+            android:layout_marginTop="8dp"
+            android:layout_below="@+id/itemIcon"
+            android:textColor="@color/text_light"
+            android:layout_alignEnd="@+id/itemIcon" />
+</RelativeLayout>
