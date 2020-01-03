@@ -5,6 +5,7 @@ package com.app.myweatherapp.utils
  */
 object StringContract {
 
-    val url  ="https://api.worldweatheronline.com/premium/v1/weather.ashx"
-    val apiKey = "74ff5d2253bb455299122209200201"
+    const val searchUrl  ="https://api.worldweatheronline.com/premium/v1/search.ashx"
+    const val weatherUrl  ="https://api.worldweatheronline.com/premium/v1/weather.ashx"
+    const val apiKey = "74ff5d2253bb455299122209200201"
 }

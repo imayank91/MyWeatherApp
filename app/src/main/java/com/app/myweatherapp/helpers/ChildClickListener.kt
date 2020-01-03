@@ -1,5 +1,6 @@
 package com.app.myweatherapp.helpers
 
+import com.app.myweatherapp.service.model.CityModel
 import com.app.myweatherapp.service.model.CityWeatherModel
 
 /**
@@ -7,5 +8,5 @@ import com.app.myweatherapp.service.model.CityWeatherModel
  */
 
 interface ChildClickListener {
-    fun onChildClick(cityWeatherModel: CityWeatherModel)
+    fun onChildClick(cityModel: CityModel)
 }

@@ -29,9 +29,9 @@ class CityWeatherViewModel : ViewModel() {
         cityWeatherModel = cityWeatherRepository.cityList
     }
 
-    fun searchCityAndWeather() {
+    fun searchCityAndWeather(cityName: String) {
         scope.launch {
-            cityWeatherRepository.fetchCity()
+            cityWeatherRepository.fetchCity(cityName)
         }
     }
 }

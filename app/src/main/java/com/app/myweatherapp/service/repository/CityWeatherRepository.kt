@@ -33,7 +33,7 @@ class CityWeatherRepository {
     private fun provideURL(cityName: String): URL? {
         val apiKey = StringContract.apiKey
         val urlBuilder =
-            StringBuilder(StringContract.url)
+            StringBuilder(StringContract.weatherUrl)
         urlBuilder.append("?")
         urlBuilder.append("&key=").append(apiKey)
         urlBuilder.append("&q=").append(cityName)
@@ -42,10 +42,10 @@ class CityWeatherRepository {
         return URL(urlBuilder.toString())
     }
 
-    fun fetchCity() {
+    fun fetchCity(cityName: String) {
         var response = ""
 
-        val url = provideURL("Delhi")
+        val url = provideURL(cityName)
         Log.i("URL", url.toString())
         val urlConnection =
             url!!.openConnection() as HttpURLConnection

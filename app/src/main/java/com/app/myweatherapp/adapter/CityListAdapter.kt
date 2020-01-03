@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.myweatherapp.R
 import com.app.myweatherapp.databinding.ListLocationRowBinding
 import com.app.myweatherapp.helpers.ChildClickListener
+import com.app.myweatherapp.service.model.CityModel
 import com.app.myweatherapp.service.model.CityWeatherModel
 import com.app.myweatherapp.viewholder.CityListViewHolder
 
@@ -19,7 +20,7 @@ class CityListAdapter(
     private val childClickListener: ChildClickListener?
 ) : RecyclerView.Adapter<CityListViewHolder>() {
 
-    private var mutableCityList = mutableListOf<CityWeatherModel>()
+    private var mutableCityList = mutableListOf<CityModel>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CityListViewHolder {
         val layoutInflater: LayoutInflater = LayoutInflater.from(context)
@@ -37,9 +38,10 @@ class CityListAdapter(
     override fun onBindViewHolder(holder: CityListViewHolder, position: Int) {
         val item = mutableCityList[position]
         holder.binding.model = item
+        holder.binding.childClick = childClickListener
     }
 
-    fun setCityList(cityList: MutableList<CityWeatherModel>) {
+    fun setCityList(cityList: MutableList<CityModel>) {
         this.mutableCityList = cityList
         notifyDataSetChanged()
     }

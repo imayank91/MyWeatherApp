@@ -5,7 +5,11 @@
 
         <variable
             name="model"
-            type="com.app.myweatherapp.service.model.CityWeatherModel" />
+            type="com.app.myweatherapp.service.model.CityModel" />
+
+        <variable
+            name="childClick"
+            type="com.app.myweatherapp.helpers.ChildClickListener" />
     </data>
 
     <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -13,72 +17,31 @@
         android:id="@+id/rowCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_margin="8dp"
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
-        android:focusable="true">
+        android:focusable="true"
+        android:onClick="@{()-> childClick.onChildClick(model)}">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_margin="10dp"
+            android:layout_margin="20dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/rowTemperatureTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="@{model.temperature}"
-                android:textSize="36sp"
-                app:layout_constraintEnd_toStartOf="@+id/rowIconTextView"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rowCityTextView" />
 
             <TextView
-                android:id="@+id/rowDescriptionTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="@{model.weatherText}"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toStartOf="@+id/rowIconTextView"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rowTemperatureTextView" />
-
-            <TextView
+                android:padding="2dp"
                 android:id="@+id/rowCityTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
                 android:text="@{model.city}"
                 android:textSize="24sp"
-                app:layout_constraintEnd_toStartOf="@+id/rowIconTextView"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/rowIconTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="8dp"
-                android:gravity="end"
-                android:paddingEnd="42dp"
-                android:text="C"
-                android:textAlignment="viewEnd"
-                android:textSize="72sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

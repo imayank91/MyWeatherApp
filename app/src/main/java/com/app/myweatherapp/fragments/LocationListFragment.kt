@@ -1,29 +1,47 @@
 package com.app.myweatherapp.fragments
 
+import android.app.AlertDialog
 import android.os.Bundle
+import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.app.myweatherapp.MyWeatherApp
 import com.app.myweatherapp.R
 import com.app.myweatherapp.adapter.CityListAdapter
 import com.app.myweatherapp.databinding.FragmentLocationListBinding
-import com.app.myweatherapp.viewmodel.CityWeatherViewModel
+import com.app.myweatherapp.helpers.ChildClickListener
+import com.app.myweatherapp.service.model.CityModel
+import com.app.myweatherapp.viewmodel.CitySearchViewModel
+import com.google.android.material.textfield.TextInputLayout
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
 /**
  * Created by mayank on January 02 2020
  */
-class LocationListFragment : Fragment() {
+class LocationListFragment : Fragment(), ChildClickListener {
 
     private lateinit var binding: FragmentLocationListBinding
-    private lateinit var viewModel:CityWeatherViewModel
+    private lateinit var viewModel: CitySearchViewModel
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var cityListAdapter: CityListAdapter
+
+    private var parentJob = Job()
+
+    private val coroutineContext: CoroutineContext
+        get() = parentJob + Dispatchers.IO
+    private val scope = CoroutineScope(coroutineContext)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,26 +50,72 @@ class LocationListFragment : Fragment() {
     ): View? {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_location_list, container, false)
-        viewModel = ViewModelProviders.of(this).get(CityWeatherViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(CitySearchViewModel::class.java)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setMenuAndSearch()
         linearLayoutManager = LinearLayoutManager(context)
         binding.recyclerView.layoutManager = linearLayoutManager
         binding.recyclerView.itemAnimator = DefaultItemAnimator()
-        cityListAdapter = CityListAdapter(context!!, null)
+        cityListAdapter = CityListAdapter(context!!, this)
         binding.recyclerView.adapter = cityListAdapter
 
-        viewModel.searchCityAndWeather()
+        viewModel.fetchRecentCities()
 
-        viewModel.cityWeatherModel.observe(viewLifecycleOwner, Observer {
+        viewModel.cityModel.observe(viewLifecycleOwner, Observer {
             it?.let {
                 cityListAdapter.setCityList(it)
             }
 
         })
+
+
+    }
+
+    private fun setMenuAndSearch() {
+        binding.toolbarHome.inflateMenu(R.menu.menu_main)
+        binding.toolbarHome.menu.getItem(0).setOnMenuItemClickListener {
+            searchCity()
+            true
+        }
+    }
+
+    private fun searchCity(){
+
+        val input = EditText(context)
+        input.inputType = InputType.TYPE_CLASS_TEXT
+        input.maxLines = 1
+        input.isSingleLine = true
+
+        val inputLayout = TextInputLayout(context)
+        inputLayout.setPadding(32, 0, 32, 0)
+        inputLayout.addView(input)
+
+        val alert: AlertDialog.Builder = AlertDialog.Builder(context)
+        alert.setTitle(this.getString(R.string.search_title))
+        alert.setView(inputLayout)
+
+        alert.setPositiveButton(R.string.dialog_ok
+        ) { _, _ ->
+            val result: String = input.text.toString()
+            if (result.isNotEmpty()) {
+                viewModel.searchCityAndWeather(result)
+            }
+        }
+        alert.setNegativeButton(R.string.dialog_cancel
+        ) { _, _ ->
+            // Cancelled
+        }
+        alert.show()
+    }
+
+    override fun onChildClick(cityModel: CityModel) {
+        scope.launch {
+            MyWeatherApp.database!!.cityDao().insertCity(cityModel)
+        }
     }
 }
