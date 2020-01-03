@@ -1,20 +1,34 @@
 package com.app.myweatherapp.service.repository
 
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import com.app.myweatherapp.service.model.CityWeatherModel
 import com.app.myweatherapp.utils.StringContract
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
+import kotlin.coroutines.CoroutineContext
 
 /**
  * Created by mayank on January 02 2020
  */
 class CityWeatherRepository {
 
-    private var cityList = mutableListOf<CityWeatherModel>()
+    var cityList = MutableLiveData<MutableList<CityWeatherModel>>()
+
+    private var mutableCityList = mutableListOf<CityWeatherModel>()
+
+    private var parentJob = Job()
+
+    private val coroutineContext: CoroutineContext
+        get() = parentJob + Dispatchers.Main
+    private val scope = CoroutineScope(coroutineContext)
 
     private fun provideURL(cityName: String): URL? {
         val apiKey = StringContract.apiKey
@@ -62,14 +76,20 @@ class CityWeatherRepository {
         val cityName = cityObject.getString("query")
         val currentconditionArr= data.getJSONObject("data").getJSONArray("current_condition")
         val currentConditionObj = currentconditionArr.getJSONObject(0)
-        val currentTemperature= currentConditionObj.getString("temp_C")
+        var currentTemperature= currentConditionObj.getString("temp_C")
+        currentTemperature = "$currentTemperature °C"
+
         val humidity = currentConditionObj.getString("humidity")
         val weatherDesc = currentConditionObj.getJSONArray("weatherDesc").getJSONObject(0).getString("value")
         val weatherIconUrl = currentConditionObj.getJSONArray("weatherIconUrl").getJSONObject(0).getString("value")
 
-        val cityWeatherModel = CityWeatherModel(weatherIconUrl, humidity, weatherDesc, currentTemperature)
+        val cityWeatherModel = CityWeatherModel(cityName, weatherIconUrl, humidity, weatherDesc, currentTemperature)
+        mutableCityList.add(cityWeatherModel)
 
-        cityList.add(cityWeatherModel)
+        scope.launch {
+            cityList.value = mutableCityList
+        }
+
     }
 
 }
