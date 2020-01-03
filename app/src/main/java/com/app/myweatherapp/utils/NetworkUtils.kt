@@ -1,6 +1,5 @@
 package com.app.myweatherapp.utils
 
-import android.util.Log
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
@@ -13,7 +12,6 @@ object NetworkUtils {
 
     fun fetchData(url: URL): String {
         var response = ""
-        Log.i("URL", url.toString())
         val urlConnection =
             url!!.openConnection() as HttpURLConnection
         if (urlConnection.responseCode == 200) {
@@ -28,11 +26,7 @@ object NetworkUtils {
             }
             response += stringBuilder.toString()
             urlConnection.disconnect()
-            Log.i("Response is ", response)
-
-            // Background work finished successfully
         } else { // Bad response from server
-            Log.i("Task", "bad response " + urlConnection.responseCode)
         }
 
         return response

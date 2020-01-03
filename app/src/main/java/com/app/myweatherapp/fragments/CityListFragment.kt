@@ -119,7 +119,7 @@ class CityListFragment : Fragment(), ChildClickListener {
     override fun onChildClick(cityModel: CityModel) {
         scope.launch {
             MyWeatherApp.database!!.cityDao().insertCity(cityModel)
-
+            MyWeatherApp.database!!.close()
             arguments = Bundle().apply {
                 putString(StringContract.CITY_NAME, cityModel.city)
             }

@@ -18,5 +18,4 @@ interface CityDao {
 
     @Query("SELECT * FROM recentCities order by addedOn DESC LIMIT 10")
     fun getCities(): List<CityModel>
-
 }
