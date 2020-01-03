@@ -7,4 +7,6 @@
 
     <string name="dialog_ok">OK</string>
     <string name="dialog_cancel">Cancel</string>
+    <string name="todays_weather">Today\'s Weather</string>
+    <string name="search_for_a_city">Search for a City</string>
 </resources>

@@ -1,31 +1,36 @@
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout>
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".fragments.LocationListFragment">
+        tools:context=".fragments.CityListFragment">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <androidx.appcompat.widget.Toolbar
-                app:title="@string/app_name"
-                app:titleTextColor="@android:color/white"
-                android:id="@+id/toolbar_home"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@color/colorPrimary"/>
+            <TextView
+                android:id="@+id/searchCityTextView"
+                android:layout_centerInParent="true"
+                android:textSize="@dimen/textSizeNormal"
+                android:text="@string/search_for_a_city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <include
+                android:id="@+id/toolbar"
+                layout="@layout/layout_toolbar"/>
 
             <androidx.recyclerview.widget.RecyclerView
+                android:layout_below="@+id/toolbar"
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layoutAnimation="@anim/layout_anim_from_bottom">
 
             </androidx.recyclerview.widget.RecyclerView>
-        </LinearLayout>
+        </RelativeLayout>
     </FrameLayout>
 </layout>

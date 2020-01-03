@@ -11,7 +11,7 @@ import java.net.URL
  */
 object NetworkUtils {
 
-    fun fetchCity(url: URL): String {
+    fun fetchData(url: URL): String {
         var response = ""
         Log.i("URL", url.toString())
         val urlConnection =

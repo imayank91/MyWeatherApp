@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -17,28 +17,23 @@
         android:id="@+id/rowCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="@dimen/card_margin"
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
         android:onClick="@{()-> childClick.onChildClick(model)}">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_margin="20dp"
+            android:layout_margin="@dimen/card_margin"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-
             <TextView
-                android:padding="2dp"
                 android:id="@+id/rowCityTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="4dp"
                 android:text="@{model.city}"
-                android:textSize="24sp"
-                app:layout_constraintHorizontal_bias="0.0"
+                tools:text="Ghaziabad, Uttar Pradesh, India"
+                android:textSize="@dimen/textSizeBig"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

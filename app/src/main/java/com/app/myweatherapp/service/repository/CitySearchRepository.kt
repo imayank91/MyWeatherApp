@@ -45,6 +45,7 @@ class CitySearchRepository {
            if(cities.isNotEmpty()){
 
                withContext(Dispatchers.Main) {
+                   mutableCityList.clear()
                    mutableCityList.addAll(cities)
                    cityList.value = mutableCityList
                }
@@ -55,7 +56,7 @@ class CitySearchRepository {
     fun fetchCity(cityName: String) {
         scope.launch {
             val url = provideURL(cityName)
-            parseResponse(NetworkUtils.fetchCity(url!!))
+            parseResponse(NetworkUtils.fetchData(url!!))
         }
     }
 

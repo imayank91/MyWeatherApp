@@ -1,69 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/weather_card"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:orientation="vertical"
-            tools:ignore="RelativeOverlap">
+    <data>
+
+        <variable
+            name="model"
+            type="com.app.myweatherapp.service.model.CityWeatherModel" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/layout_toolbar"/>
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_centerInParent="true"
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/card_height"
+        app:cardUseCompatPadding="true"
+        android:layout_gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/weather_card"
+            android:orientation="vertical">
+
+            <ProgressBar
+                android:indeterminateTint="@android:color/white"
+                android:indeterminate="true"
+                android:layout_centerInParent="true"
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:weightSum="3"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/card_margin"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_weight="1"
+                    android:id="@+id/itemCity"
+                    android:layout_width="wrap_content"
+                    android:gravity="center"
+                    android:layout_height="0dp"
+                    android:text="@{model.city}"
+                    android:textColor="@color/text_light"
+                    android:textSize="@dimen/textSizeNormal"
+                    android:textStyle="bold"
+                    tools:text="16:00" />
+
+                <TextView
+                    android:layout_weight="1"
+                    android:id="@+id/itemDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:gravity="center"
+                    android:text="@{model.weatherText}"
+                    android:textColor="@color/text_light"
+                    android:textSize="@dimen/textSizeNormal"
+                    tools:text="No data" />
+
+                <TextView
+                    android:layout_weight="1"
+                    android:id="@+id/itemHumidity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:gravity="center"
+                    android:text="@{model.humidity}"
+                    android:textColor="@color/text_light"
+                    android:textSize="@dimen/textSizeNormal"
+                    tools:text="Humidity: 0 %" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/itemIcon"
+                weatherImage="@{model.weatherImage}"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="@dimen/card_margin"
+                android:layout_marginEnd="@dimen/card_margin"
+                android:contentDescription="@string/weatherimage"
+                android:textColor="@color/text_light" />
 
             <TextView
-                android:padding="2dp"
-                android:id="@+id/itemDate"
+                android:layout_alignParentBottom="true"
+                android:id="@+id/itemTemperature"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="16:00"
+                android:layout_alignEnd="@+id/itemIcon"
+                android:layout_marginBottom="@dimen/card_margin"
+                android:text="@{model.temperature}"
                 android:textColor="@color/text_light"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/textSizeBig"
+                tools:text="0 °C" />
 
-            <TextView
-                android:padding="2dp"
-                android:id="@+id/itemDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="No data"
-                android:textColor="@color/text_light"
-                android:textSize="16sp" />
 
-            <TextView
-                android:padding="2dp"
-                android:id="@+id/itemHumidity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="Humidity: 0 %"
-                android:textColor="@color/text_light"
-                android:textSize="16sp" />
-        </LinearLayout>
-
-        <ImageView
-            android:src="@drawable/ic_cloud_white_36dp"
-            android:id="@+id/itemIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="16dp"
-            android:textColor="@color/text_light"
-            android:textSize="48sp"
-            android:contentDescription="@string/weatherimage" />
-
-        <TextView
-            android:id="@+id/itemTemperature"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="0 °C"
-            android:textSize="22sp"
-            android:layout_marginTop="8dp"
-            android:layout_below="@+id/itemIcon"
-            android:textColor="@color/text_light"
-            android:layout_alignEnd="@+id/itemIcon" />
-</RelativeLayout>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+    </RelativeLayout>
+</layout>

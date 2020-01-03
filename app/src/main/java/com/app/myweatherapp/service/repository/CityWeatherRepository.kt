@@ -1,17 +1,11 @@
 package com.app.myweatherapp.service.repository
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.app.myweatherapp.service.model.CityWeatherModel
+import com.app.myweatherapp.utils.NetworkUtils
 import com.app.myweatherapp.utils.StringContract
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import org.json.JSONObject
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import java.net.HttpURLConnection
 import java.net.URL
 import kotlin.coroutines.CoroutineContext
 
@@ -20,14 +14,12 @@ import kotlin.coroutines.CoroutineContext
  */
 class CityWeatherRepository {
 
-    var cityList = MutableLiveData<MutableList<CityWeatherModel>>()
-
-    private var mutableCityList = mutableListOf<CityWeatherModel>()
+    var cityWeather = MutableLiveData<CityWeatherModel>()
 
     private var parentJob = Job()
 
     private val coroutineContext: CoroutineContext
-        get() = parentJob + Dispatchers.Main
+        get() = parentJob + Dispatchers.IO
     private val scope = CoroutineScope(coroutineContext)
 
     private fun provideURL(cityName: String): URL? {
@@ -43,33 +35,13 @@ class CityWeatherRepository {
     }
 
     fun fetchCity(cityName: String) {
-        var response = ""
-
-        val url = provideURL(cityName)
-        Log.i("URL", url.toString())
-        val urlConnection =
-            url!!.openConnection() as HttpURLConnection
-        if (urlConnection.responseCode == 200) {
-            val inputStreamReader =
-                InputStreamReader(urlConnection.inputStream)
-            val r = BufferedReader(inputStreamReader)
-            val stringBuilder = java.lang.StringBuilder()
-            var line: String?
-            while (r.readLine().also { line = it } != null) {
-                stringBuilder.append(line)
-                stringBuilder.append("\n")
-            }
-            response += stringBuilder.toString()
-            urlConnection.disconnect()
-            parseResponse(response)
-            Log.i("Response is ", response)
-            // Background work finished successfully
-        } else { // Bad response from server
-            Log.i("Task", "bad response " + urlConnection.responseCode)
+        scope.launch {
+            val url = provideURL(cityName)
+            parseResponse(NetworkUtils.fetchData(url!!))
         }
     }
 
-    private fun parseResponse(response:String) {
+    private suspend fun parseResponse(response:String) {
         val data = JSONObject(response)
         val requestArray = data.getJSONObject("data").getJSONArray("request")
         val cityObject = requestArray.getJSONObject(0)
@@ -79,15 +51,16 @@ class CityWeatherRepository {
         var currentTemperature= currentConditionObj.getString("temp_C")
         currentTemperature = "$currentTemperature °C"
 
-        val humidity = currentConditionObj.getString("humidity")
+        var humidity = currentConditionObj.getString("humidity")
+        humidity = "Humidity: $humidity %"
+
         val weatherDesc = currentConditionObj.getJSONArray("weatherDesc").getJSONObject(0).getString("value")
         val weatherIconUrl = currentConditionObj.getJSONArray("weatherIconUrl").getJSONObject(0).getString("value")
 
         val cityWeatherModel = CityWeatherModel(cityName, weatherIconUrl, humidity, weatherDesc, currentTemperature)
-        mutableCityList.add(cityWeatherModel)
 
-        scope.launch {
-            cityList.value = mutableCityList
+        withContext(Dispatchers.Main) {
+            cityWeather.value = cityWeatherModel
         }
 
     }
