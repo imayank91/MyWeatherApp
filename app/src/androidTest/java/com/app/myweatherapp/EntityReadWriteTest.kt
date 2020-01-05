@@ -39,10 +39,12 @@ class EntityReadWriteTest {
 
     @Test
     @Throws(Exception::class)
-    fun writeUserAndReadInList() {
+    fun writeCityAndReadInList() {
         val city = CityModel("New Delhi", System.currentTimeMillis())
         cityDao.insertCity(city)
         val citiItem = cityDao.getCities()[0]
         assertThat(citiItem, equalTo(citiItem))
     }
+
+
 }

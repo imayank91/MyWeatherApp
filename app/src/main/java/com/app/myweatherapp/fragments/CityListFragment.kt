@@ -92,7 +92,6 @@ class CityListFragment : Fragment(), ChildClickListener {
         val input = EditText(context)
         input.inputType = InputType.TYPE_CLASS_TEXT
         input.maxLines = 1
-        input.isSingleLine = true
 
         val inputLayout = TextInputLayout(context)
         inputLayout.setPadding(32, 0, 32, 0)

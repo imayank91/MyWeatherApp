@@ -1,5 +1,6 @@
 package com.app.myweatherapp
 
+import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 

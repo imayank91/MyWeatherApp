@@ -40,7 +40,6 @@ fun loadImage(view: ImageView, image_location: String?) {
             } catch (e: IOException) {
                 e.printStackTrace()
             }
-        } else { //set any default
         }
     }
 

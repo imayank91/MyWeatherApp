@@ -1,6 +1,5 @@
 package com.app.myweatherapp.service.repository
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.app.myweatherapp.MyWeatherApp
 import com.app.myweatherapp.service.model.CityModel
@@ -62,7 +61,6 @@ class CitySearchRepository {
 
 
     private suspend fun parseResponse(response: String) {
-        Log.i("Response is ", response)
 
         val data = JSONObject(response)
         val resultArray = data.getJSONObject("search_api").getJSONArray("result")
