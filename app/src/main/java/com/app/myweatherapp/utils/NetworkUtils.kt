@@ -1,5 +1,7 @@
 package com.app.myweatherapp.utils
 
+import android.content.Context
+import android.net.ConnectivityManager
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
@@ -31,4 +33,11 @@ object NetworkUtils {
 
         return response
     }
+
+    fun isConnectedToNetwork(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+        return connectivityManager?.activeNetworkInfo?.isConnected ?: false
+    }
+
 }

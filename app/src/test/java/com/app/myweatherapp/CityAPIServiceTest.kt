@@ -1,6 +1,5 @@
 package com.app.myweatherapp
 
-import androidx.core.net.toUri
 import com.app.myweatherapp.utils.NetworkUtils
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -11,7 +10,6 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import java.io.IOException
-import java.net.URL
 import java.nio.charset.StandardCharsets
 
 
@@ -41,7 +39,7 @@ class CityAPIServiceTest {
 
     @Test
     @Throws(IOException::class)
-    fun fetchPostsTest() {
+    fun testCitySearch() {
         enqueueResponse("city_search.json")
         val response = NetworkUtils.fetchData(mockWebServer.url("/").url())
         Assert.assertNotEquals("", response)

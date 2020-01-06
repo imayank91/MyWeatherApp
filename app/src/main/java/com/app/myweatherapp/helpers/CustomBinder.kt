@@ -33,7 +33,7 @@ fun loadImage(view: ImageView, image_location: String?) {
                 connection.doInput = true
                 connection.connect()
                 val inputStream: InputStream = connection.inputStream
-                val bitmap = BitmapFactory.decodeStream(inputStream) // Convert to bitmap
+                val bitmap = BitmapFactory.decodeStream(inputStream)
                 withContext(Dispatchers.Main){
                     view.setImageBitmap(bitmap)
                 }

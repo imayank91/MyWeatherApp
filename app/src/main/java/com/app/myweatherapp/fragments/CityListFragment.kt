@@ -20,8 +20,10 @@ import com.app.myweatherapp.adapter.CityListAdapter
 import com.app.myweatherapp.databinding.FragmentCityListBinding
 import com.app.myweatherapp.helpers.ChildClickListener
 import com.app.myweatherapp.service.model.CityModel
+import com.app.myweatherapp.utils.NetworkUtils.isConnectedToNetwork
 import com.app.myweatherapp.utils.StringContract
 import com.app.myweatherapp.viewmodel.CitySearchViewModel
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -75,14 +77,19 @@ class CityListFragment : Fragment(), ChildClickListener {
             }
 
         })
-
+        checkNetwork()
 
     }
 
     private fun setMenuAndSearch() {
         binding.toolbar.toolbarHome.inflateMenu(R.menu.menu_main)
         binding.toolbar.toolbarHome.menu.getItem(0).setOnMenuItemClickListener {
-            searchCity()
+            if(isConnectedToNetwork(context!!)){
+                searchCity()
+            }else{
+                checkNetwork()
+            }
+
             true
         }
     }
@@ -115,14 +122,22 @@ class CityListFragment : Fragment(), ChildClickListener {
         alert.show()
     }
 
+    private fun checkNetwork() {
+        if(!isConnectedToNetwork(context!!)){
+            Snackbar.make(view!!, "No internet Connection", Snackbar.LENGTH_LONG).show()
+        }
+    }
+
+
     override fun onChildClick(cityModel: CityModel) {
         scope.launch {
             MyWeatherApp.database!!.cityDao().insertCity(cityModel)
-            MyWeatherApp.database!!.close()
-            arguments = Bundle().apply {
-                putString(StringContract.CITY_NAME, cityModel.city)
-            }
-            findNavController().navigate(R.id.action_cityListFragment_to_weatherDetailFragment,arguments)
         }
+        arguments = Bundle().apply {
+            putString(StringContract.CITY_NAME, cityModel.city)
+        }
+        findNavController().navigate(R.id.action_cityListFragment_to_weatherDetailFragment,arguments)
+
     }
+
 }
