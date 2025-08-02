@@ -95,7 +95,7 @@ dependencies {
 
     debugImplementation ("androidx.fragment:fragment-testing:$fragment_version")
 
-    implementation 'androidx.test:core:1.2.0'
+    implementation 'androidx.test:core:1.7.0'
 
 
 }
