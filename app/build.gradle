@@ -39,7 +39,7 @@ android {
         archTestingVersion = '2.0.0'
         truthVersion = '0.44'
         roboElectric = '4.3.1'
-        fragment_version = "1.1.0"
+        fragment_version = "1.9.0"
     }
 
     dataBinding {
